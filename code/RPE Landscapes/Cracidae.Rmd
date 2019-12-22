@@ -1,0 +1,64 @@
+---
+title: "Cracidae"
+author: "Elena Quintero"
+date: "18/7/2017"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+#**CRACIDAE**
+```{r input}
+#Read data
+cracids<- read.csv("Cracidae.csv", header=T, sep=";")
+names(cracids)
+
+cracids2 <- subset(Cracidae, Cracidae$QTY > 0) #Select rows for which we have data
+```
+
+**First need to run the function effectiveness_eq from effectiveness_new_plot.R**
+```{r}
+RPE_cracidae <- effectiveness_eq(cracids$fruit_visit, cracids$energy_fruit, , 
+                                   cracids$plant, 10, 
+                                   myxlab= "Qty component - feeding frequency (fruits/visit)", 
+                                   myylab= "Qly component - energy (KJ/fruit)")
+
+#Include SE bars and colors for each species
+RPE_cracidae + geom_errorbarh(aes(xmin = cracids$fruit_visit - cracids$fruit_visit_SE, xmax = cracids$fruit_visit+
+              cracids$fruit_visit_SE), height=0.3)+ geom_point(aes(colour = cracids$species), pch=16, size=3) +   
+              labs(colour="Frugivore species")
+```
+
+
+```{r}
+RPE_cracidae2 <- effectiveness_eq(cracids2$QTY, cracids2$energy_fruit, , 
+                                    cracids2$plant, 10, 
+                                    myxlab= "Qty component - feeding frequency (fruits/h)", 
+                                    myylab= "Qly component - energy (KJ/fruit)")
+# Include SE bars and colors for each species
+RPE_cracidae2 + geom_errorbarh(aes(xmin = cracids2$QTY - cracids2$QTY_SE,xmax = cracids2$QTY + 
+              cracids2$QTY_SE), height=0.3) + geom_point(aes(colour = factor(cracids2$species)), pch=16, size=3) +
+              labs(colour="Frugivore species")
+```
+
+
+
+```{r Paco's function}
+effectiveness_paco(cracids$fruit_visit, cracids$energy_fruit, q1.error=cracids$fruit_visit_SE, 
+                  q2.error=NULL, pts.color = cracids$species, label= cracids$plant, nlines=7, 
+                  lines.color = "light grey", lines.breaks = c(20, 50, 100, 150, 250, 500, 800, 2000), 
+                  myxlab= "Qty component - feeding frequency (fruits/visit)", 
+                  myylab= "Qly component - energy (KJ/fruit)") 
+
+
+effectiveness_paco(Cracid$QTY, Cracid$energy_fruit, q1.error=Cracid$QTY_SE, q2.error=NULL, 
+                   pts.color = Cracid$species, label= Cracid$plant, nlines=7, lines.color = "light grey", 
+                   lines.breaks = c(0.5, 1, 1.5, 2, 2.5, 3,7,9),
+                   myxlab= "Qty component - feeding frequency (fruits/h)", 
+                   myylab= "Qly component - energy (KJ/fruit)")
+
+```
+
+

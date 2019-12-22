@@ -1,0 +1,39 @@
+"0","# Installation."
+"0","devtools::install_github(""pedroj/effectiveness_pckg"")"
+"2","Downloading GitHub repo pedroj/effectiveness_pckg@master
+from URL https://api.github.com/repos/pedroj/effectiveness_pckg/zipball/master
+"
+"2","Installing effect.lndscp
+"
+"2","'/Library/Frameworks/R.framework/Resources/bin/R' --no-site-file  \
+  --no-environ --no-save --no-restore --quiet CMD INSTALL  \
+  '/private/var/folders/q0/zm6sf26x3gj0z04rrwjwvywc0000gn/T/RtmpeXjQln/devtools667777d898d9/pedroj-effectiveness_pckg-3f9d91e'  \
+  --library='/Library/Frameworks/R.framework/Versions/3.3/Resources/library'  \
+  --install-tests 
+"
+"2","
+"
+"2","* installing *source* package ‘effect.lndscp’ ...
+"
+"2","** R
+"
+"2","** data
+"
+"2","*** moving datasets to lazyload DB
+"
+"2","** preparing package for lazy loading
+"
+"2","** help
+"
+"2","*** installing help indices
+"
+"2","** building package indices
+"
+"2","** testing if installed package can be loaded
+"
+"2","* DONE (effect.lndscp)
+"
+"0","library(effect.lndscp)"
+"0","#---------------------------------------------------------------------------"
+"0","# Read data."
+"0","ramp_pj<- read.table(""ramp.csv"", header=TRUE, sep="";"", dec=""."", na.strings=""NA"")"

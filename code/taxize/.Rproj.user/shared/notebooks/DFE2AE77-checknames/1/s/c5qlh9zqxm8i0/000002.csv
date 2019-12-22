@@ -1,0 +1,71 @@
+"0","pp<- classification(names, db = 'gbif')"
+"2","
+Retrieving data for taxon 'Penelope obscura'
+
+"
+"2","
+Retrieving data for taxon 'Aburria jacutinga'
+
+"
+"2","
+Retrieving data for taxon 'Ramphastos vitellinus'
+
+"
+"2","
+Retrieving data for taxon 'Ramphastos dicolorus'
+
+"
+"2","
+Retrieving data for taxon 'Procnias nudicollis'
+
+"
+"2","
+Retrieving data for taxon 'Selenidera maculirostris'
+
+"
+"2","
+Retrieving data for taxon 'Baillonius bailloni'
+
+"
+"2","
+Retrieving data for taxon 'Trogon viridis'
+
+"
+"2","
+Retrieving data for taxon 'Trogon surrucura'
+
+"
+"2","
+Retrieving data for taxon 'Tityra cayana'
+
+"
+"2","
+Retrieving data for taxon 'Euphonia violacea'
+
+"
+"2","
+Retrieving data for taxon 'Euphonia pectoralis'
+
+"
+"2","
+Retrieving data for taxon 'Thraupis sayaca'
+
+"
+"2","
+Retrieving data for taxon 'Tangara seledon'
+
+"
+"2","
+Retrieving data for taxon 'Turdus rufiventris'
+
+"
+"2","
+Retrieving data for taxon 'Turdus albicollis'
+
+"
+"0","# Checking an alternative way, more elegant."
+"0","# ppp<- lapply(pp, function(x) {dplyr::select(x, name)})"
+"0","# ppp<- as.data.frame(unlist(t(as.data.frame(ppp))))"
+"0","highercat<- cbind.classification(pp)"
+"0","highercat<- highercat[,3:7]"
+"0","highercat"

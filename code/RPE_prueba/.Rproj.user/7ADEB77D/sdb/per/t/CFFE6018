@@ -1,0 +1,20 @@
+{
+    "collab_server" : "",
+    "contents" : "#Include the dataset\nlibrary(readr)\nRPE <- read_delim(\"RPE_data_imputation.csv\", \";\", escape_double = FALSE, col_types = cols(frug = col_factor(levels = c()), \n                                                                                          frug_family = col_factor(levels = c()), \n                                                                                          fruit_visit = col_number(), \n                                                                                          plant = col_factor(levels = c()),  \n                                                                                          plant_family = col_factor(levels = c())), trim_ws = TRUE)\nRPE\nstr(RPE)\n\n#Plotting relation body mass and fruits/visit*FRFM\n#\nplot(RPE$body_mass, RPE$fruit_visit*RPE$FRFM)\nplot(log(RPE$body_mass), log(RPE$fruit_visit*RPE$FRFM)) #convert to logarythm to normalize\nmodel <- lm(log(fruit_visit*FRFM)~log(body_mass), RPE)\nabline(model)\nsummary(model)\npar(mfrow=c(2,2)) #model checking\nplot(model)\npar(mfrow=c(1,1))\n\n\n# Correlation test. Ommitting just the pairwise NA's \n# \ncor.test(log(RPE$fruit_visit*RPE$FRFM), log(RPE$body_mass), method=\"pearson\", use= \"pairwise.complete.obs\")\npairs(log(RPE$fruit_visit*RPE$FRFM), log(RPE$body_mass), method=\"pearson\", use= \"pairwise.complete.obs\")\n\n\n#Infer estimated values of fruit mass ingested (frugivore mean mass of fruit ingested) \n#for frugivore body mass\nfrug_capacity <- exp(predict(model, RPE))\nRPE_capacity <- cbind(RPE, frug_capacity)\nstr(RPE_capacity)\n\n#save results in data.csv\nwrite.csv(RPE_capacity, \"RPE_capacity.csv\")\n\n\n\n\n\n\n\n\n#EFFECTIVENESS LANDSCAPE FOR Ramphastos dicolorus\nRPE_R.dicol <- subset (RPE_capacity, frug == \"Ramphastos dicolorus\")\nRPE_R.dicol\n#Calculation of Quality component\nspecific_energy <- (RPE_R.dicol$LIP*35+RPE_R.dicol$PRO*14.1+RPE_R.dicol$TOTALSUG*15.1)\nspecific_energy\nRPE_R.dicol <- cbind(RPE_R.dicol, specific_energy)\nQLY <- ((RPE_R.dicol$frug_capacity*(RPE_R.dicol$PDM/RPE_R.dicol$FRFM)*RPE_R.dicol$specific_energy))/RPE_R.dicol$fruit_visit\nQLY\nR.dicol <- cbind(RPE_R.dicol, QTY, QLY)\nnames(R.dicol)\nRamp <- subset(R.dicol, !is.na(QLY)) #remove data for missing values\n\n#Effectiveness landscape - PROBLEM\nlibrary(effect.lndscp)\nlibrary(devtools)\nlibrary(ggplot2)\nlibrary(ggrepel)\neffectiveness_plot(Ramp$QTY, Ramp$QLY, \n                    Ramp$plant_family, \n                    Ramp$plant, 10, \n                    myxlab= \"Qty component (fruits/h)\", \n                    myylab= \"Qly component (KJ/h)\")\n\n",
+    "created" : 1497274578166.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "1945922298",
+    "id" : "CFFE6018",
+    "lastKnownWriteTime" : 1497889471,
+    "last_content_update" : 1497889471,
+    "path" : "~/Documents/Working/MSS_Elena_master/code/RPE_prueba/RPE_prueba.R",
+    "project_path" : "RPE_prueba.R",
+    "properties" : {
+    },
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

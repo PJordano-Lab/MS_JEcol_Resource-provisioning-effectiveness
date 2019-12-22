@@ -1,0 +1,57 @@
+---
+title: "Body size"
+author: "Pedro Jordano"
+date: "12/7/2017"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+### Body mass variation of studied species
+
+
+```{r input}
+# Read data
+library(readr)
+# Body mass data from ATLANTIC-TRAITS
+BM <- read.table("../../data/birds_BM.txt", header= T, sep= "\t", 
+                 dec = ".", na.strings = "NA")
+names(BM)
+BM_studied <- read.table("../../data/birds_incl_BM.txt", header= T, sep= "\t", 
+                 dec = ".", na.strings = "NA")
+names(BM_studied)
+bmm<- unique(BM_studied) # Trimming the repeated data.
+
+```
+
+## Plots
+
+A line plot to show the gradient of variation in body mass and highlight the studied species.
+
+```{r BM, echo=FALSE, fig.width=10}
+library(ggplot2)
+ggplot(BM, aes(x= 1, y= BM.g, fill= factor(BLFamilyLatin))) +
+           geom_dotplot(binaxis= "y", stackgroups= TRUE,
+                        binwidth= 0.1, method= "histodot", dotsize= 0.5) +
+           scale_y_log10()
+           
+
+```
+
+
+```{r BM_studied, echo=FALSE, fig.width=10}
+ggplot(bmm, aes(x= 1, y= body_mass, fill= factor(frug_family))) +
+           geom_dotplot(binaxis= "y", stackgroups= TRUE,
+                        binwidth= 0.1, method= "histodot", dotsize= 0.5) +
+           scale_y_log10()
+
+```
+
+
+```{r sessioninfo}
+sessionInfo()
+
+```
+

@@ -1,0 +1,165 @@
+---
+title: "RPE for each species"
+author: "Elena Quintero"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+#Call requiered packages
+library(readr)
+library(effect.lndscp)
+library(devtools)
+library(ggplot2)
+library(ggrepel)
+```
+
+Problems to solve:
+- Error bars out of graph
+- Name of isolines - move further right
+- Choose apropriate visualization when too many species points:
+    - Use numbers and legend
+    - Change to shorter names
+    - Grouping for plant families
+    - Avoid clustering - ggrepel options
+
+
+#CRACIDAE
+Done for Penelope and Aburria together as there is few data. 
+```{r}
+#Import data
+Cracidae <- read_delim("Cracidae.csv", ";", escape_double = FALSE, 
+                      col_types = cols(plant = col_factor(levels = c()), 
+                      plant_family = col_factor(levels = c()), 
+                      species = col_factor(levels = c())), trim_ws = TRUE)
+names(Cracidae)
+```
+
+
+```{r}
+#RPE for Cracids
+Cracid <- subset(Cracidae, Cracidae$QTY > 0) #Select rows for which we have data
+Cracid
+RPE2_Cracidae <- effectiveness_plot(Cracid$QTY, Cracid$energy_fruit, , 
+                                    Cracid$plant, 10, 
+                                    myxlab= "Qty component - feeding frequency (fruits/h)", 
+                                    myylab= "Qly component - energy (KJ/fruit)")
+# Include SE bars and colors for each species
+# PEDRO: I've added xlim and ylim; does not seem to work well...
+RPE2_Cracidae + geom_errorbarh(aes(xmin = Cracid$QTY - Cracid$QTY_SE,xmax = Cracid$QTY + Cracid$QTY_SE), height=0.3) + 
+                geom_point(aes(colour = factor(Cracid$species)), size=3) +
+                coord_cartesian(xlim=c(0, 0.62), ylim=c(0, 16))+ labs(colour="Frugivore species")
+```
+RPE based on: QTY component (visit_freq*fruits_visit) and QLY (fruit energy).
+
+```{r}
+#RPE for Cracids using fruits/visit and energy/fruit
+#Overcomming missing data for visitation frequency and from estimated fruits/visit
+Cracidae
+RPE_Cracidae <- effectiveness_plot(Cracidae$fruit_visit, Cracidae$energy_fruit, , 
+                                   Cracidae$plant, 10, 
+                                   myxlab= "Qty component - feeding frequency (fruits/visit)", 
+                                   myylab= "Qly component - energy (KJ/fruit)")
+#Include SE bars and colors for each species
+RPE_Cracidae + geom_errorbarh(aes(xmin = Cracidae$fruit_visit - Cracidae$fruit_visit_SE, xmax = Cracidae$fruit_visit + 
+              Cracidae$fruit_visit_SE), height=0.3)+ 
+              geom_point(aes(colour = factor(Cracidae$species)), size=3)+ labs(colour="Frugivore species")
+```
+Using estimated number of fruits/visit from regression. 
+RPE based on: QTY component (fruits_visit) and QLY (fruit energy).
+Nectandra and Phytolacca sp get very high estimates as they are small fruits - probably unrealistic
+
+
+
+
+
+
+
+
+
+
+#RAMPHASTIDAE
+```{r}
+#Import data
+Toucans <- read_delim("Toucans.csv", ";", escape_double = FALSE, 
+                    col_types = cols(plant = col_factor(levels = c()), 
+                    plant_family = col_factor(levels = c()), 
+                    species = col_factor(levels = c())), trim_ws = TRUE)
+names(Toucans)
+#Subset for each toucan species
+Baillonus <- subset(Toucans, species == "Baillonius bailloni")
+R_dicol <- subset(Toucans, species == "Ramphastos dicolorus")
+R_vitel <- subset(Toucans, species == "Ramphastos vitellinus")
+Selenidera <- subset(Toucans, species == "Selenidera maculirostris")
+
+#Subset for groups
+toucanets <- subset(Toucans, species=c("Baillonius bailloni", "Selenidera maculirostris"))
+```
+
+```{r}
+#RPE for toucanets together
+RPE_toucanets <- effectiveness_plot(toucanets$QTY, toucanets$energy_fruit,, 
+                toucanets$plant, 10, 
+                myxlab= "Qty component - feeding frequency (fruits/h)", 
+                myylab= "Qly component - energy (KJ/fruit)")
+RPE_toucanets +   geom_errorbarh(aes(xmin = toucanets$QTY - toucanets$QTY_SE, xmax = toucanets$QTY + toucanets$QTY_SE), height=0.3)+
+                geom_point(aes(colour = factor(toucanets$species)), size=3)+ labs(colour="Frugivore species")
+```
+
+##Baillonius bailloni 
+Different RPEs if variation in QLY or not.
+```{r}
+#RPE landscape for Baillonius bailloni with QLY variation
+RPE_Baillonus <- effectiveness_plot(Baillonus$QTY, Baillonus$QLY, 
+                Baillonus$plant_family, 
+                Baillonus$plant, 10, 
+                myxlab= "Qty component - feeding frequency (fruits/h)", 
+                myylab= "Qly component - energy (KJ/fruit)")
+RPE_Baillonus + geom_errorbar(aes(ymin= Baillonus$QLY - Baillonus$QLY_SE,ymax=Baillonus$QLY + Baillonus$QLY_SE),width=.02) +   
+                geom_errorbarh(aes(xmin = Baillonus$QTY - Baillonus$QTY_SE, xmax = Baillonus$QTY + Baillonus$QTY_SE), height=0.3)+
+                geom_point(aes(colour = factor(Baillonus$plant_family)), size=3)
+
+
+#RPE landscape for Baillonius bailloni without QLY variation
+RPE_Baillonus2 <- effectiveness_plot(Baillonus$QTY, Baillonus$energy_fruit, 
+                  Baillonus$plant_family, Baillonus$plant, 10,
+                  myxlab= "Qty component - feeding frequency (fruits/h)",
+                  myylab= "myylab(KJ/fruit)")
+RPE_Baillonus2 + geom_errorbarh(aes(xmin = Baillonus$QTY - Baillonus$QTY_SE, xmax = Baillonus$QTY + Baillonus$QTY_SE),height=0.3)+
+                  geom_point(aes(colour = factor(Baillonus$plant_family)), size=3)
+```
+
+##Ramphastos dicolorus
+```{r}
+RPE_R_dicol <- effectiveness_plot(R_dicol$QTY, R_dicol$QLY, R_dicol$plant_family, 
+                R_dicol$plant, 10, 
+                myxlab= "Qty component - feeding frequency (fruits/h)", 
+                myylab= "Qly component - energy (KJ/fruit)")
+RPE_R_dicol + geom_errorbar(aes(ymin= R_dicol$QLY - R_dicol$QLY_SD, ymax=R_dicol$QLY+ R_dicol$QLY_SD), width=.02) +
+              geom_errorbarh(aes(xmin = R_dicol$QTY - R_dicol$QTY_SD,xmax = R_dicol$QTY + R_dicol$QTY_SD), height=0.3)
+
+
+```
+
+RPE change with digestibility values
+```{r}
+#Data 
+Toucans2 <- read_delim("Toucans_digest.csv", ";", escape_double = FALSE, 
+                    col_types = cols(plant = col_factor(levels = c()), 
+                    plant_family = col_factor(levels = c()), 
+                    species = col_factor(levels = c())), trim_ws = TRUE)
+#INCLUDING DIGESTIBILITY VALUES
+R_dicol2 <- subset(Toucans2, species == "Ramphastos dicolorus")
+RPE_R_dicol_digest <- effectiveness_plot(R_dicol2$QTY, R_dicol2$QLY, R_dicol2$plant_family, 
+                R_dicol2$plant, 10, 
+                myxlab= "Qty component - feeding frequency (fruits/h)", 
+                myylab= "Qly component - energy (KJ/fruit)")
+RPE_R_dicol_digest + geom_errorbar(aes(ymin= R_dicol2$QLY - R_dicol2$QLY_SD, ymax=R_dicol2$QLY+ R_dicol2$QLY_SD), width=.02) +
+              geom_errorbarh(aes(xmin = R_dicol2$QTY - R_dicol2$QTY_SD,xmax = R_dicol2$QTY + R_dicol2$QTY_SD), height=0.3)+
+              geom_point(aes(x=R_dicol2$QTY[2],y=R_dicol2$QLY[2]), colour="red", size=2)+
+              geom_point(aes(x=R_dicol2$QTY[6],y=R_dicol2$QLY[6]), colour="blue", size=2)
+```
+When including digestibility the points go further down in the quality scale

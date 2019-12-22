@@ -1,0 +1,49 @@
+---
+title: "Phylogeny"
+author: "Pedro Jordano"
+date: "12/7/2017"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Plant phylogeny
+
+```{r input}
+library(ape)
+# This is the actual tree. Gives input errors.
+tree<- "Plants(((((((((((((((((((((((Copaifera_langsdorffii)Copaifera)fabaceae))fabales,(((((((Trema_micrantha)Trema)cannabaceae,(((Cecropia_glaziovii,Cecropia_pachystachya)Cecropia)urticaceae)))))rosales)),(((((((Erythroxylum_ambiguum)Erythroxylum)erythroxylaceae)),(((Alchornea_glandulosa)Alchornea)euphorbiaceae))malpighiales,((((((Sloanea_guianensis)Sloanea)elaeocarpaceae))))oxalidales))celastrales_to_malpighiales))fabids,(((((((((((((((((((Eugenia_umbelliflora,Eugenia_uniflora)eugenia)eugeniagroup))))))myrteae)myrteaestem))))myrtaceae))))myrtales),((((((((((Schinus_terebinthifolius)Schinus,(Tapirira_guianensis)Tapirira)anacardiaceae,((Protium_heptaphyllum)Protium)burseraceae)),((((Cabralea_canjerana)Cabralea)meliaceae)))))sapindales))))malvids))rosids),(((((((((((((((((Schefflera_morototoni)Schefflera)araliaceae)))))apiales))))campanulids,(((((((((((((((Citharexylum_myrianthum)Citharexylum)verbenaceae))))))))))lamiales)))lamiids),(((((((Myrsine_coriacea,Myrsine_gardneriana,Myrsine_umbellata)Myrsine)primulaceae)))))ericales)ericales_to_asterales)asterids)))))core_eudicots)trochodendrales_to_asterales)sabiales_to_asterales)eudicots)ceratophyllales_and_eudicots,((((((((((Euterpe_edulis)Euterpe)arecaceae)arecales)commelinids))))))monocots)poales_to_asterales,(((((((Magnolia_ovata)Magnolia)magnoliaceae),((Virola_bicuhyba,Virola_oleifera,Virola_sebifera)Virola)myristicaceae)magnoliales,((((((Nectandra_megapotamica)Nectandra,(Cinnamomum_triplinerve)Cinnamomum)lauraceae))))laurales))magnoliids))magnoliales_to_asterales)austrobaileyales_to_asterales)nymphaeales_to_asterales)angiosperms)seedplants)euphyllophyte);"
+
+# This is the tree with taxa with >2 spp. Exported from Phylomatic avoiding singleton branches.
+tree<-"((((((Copaifera_langsdorffii,(Trema_micrantha,(Cecropia_glaziovii,Cecropia_pachystachya)Cecropia)),((Erythroxylum_ambiguum,Alchornea_glandulosa)malpighiales,Sloanea_guianensis)),((Eugenia_umbelliflora,Eugenia_uniflora)eugenia,(((Schinus_terebinthifolius,Tapirira_guianensis)anacardiaceae,Protium_heptaphyllum),Cabralea_canjerana))malvids),((Schefflera_morototoni,Citharexylum_myrianthum),(Myrsine_coriacea,Myrsine_gardneriana,Myrsine_umbellata)Myrsine)ericales_to_asterales),Euterpe_edulis)poales_to_asterales,((Magnolia_ovata,(Virola_bicuhyba,Virola_oleifera,Virola_sebifera)Virola)magnoliales,(Nectandra_megapotamica,Cinnamomum_triplinerve)lauraceae))magnoliales_to_asterales;"
+
+```
+
+## New tree with fake species to avoid singleton branches
+
+I've added fake species (e.g., `Schefflera_2`) to get a new tree with fully dichotomous branches. Then I'll trimm the fake taxa in `Mesquite`.
+
+```{r tree_fake, echo=FALSE}
+# This is the tree with fake species included. Trim the "_2" taxa.
+tree2<- "((((((Citharexylum_myrianthum,Citharexylum_2)Citharexylum,(Schefflera_morototoni,Schefflera_2)Schefflera),(Myrsine_umbellata,Myrsine_coriacea,Myrsine_gardneriana)Myrsine)ericales_to_asterales,((((Copaifera_langsdorffii,Copaifera_2)Copaifera,((Trema_2,Trema_micrantha)Trema,(Cecropia_glaziovii,Cecropia_pachystachya)Cecropia)),(((Erythroxylum_ambiguum,Erythroxylum_2)Erythroxylum,(Alchornea_glandulosa,Alchornea_2)Alchornea)malpighiales,(Sloanea_2,Sloanea_guianensis)Sloanea)),((Eugenia_umbelliflora,Eugenia_uniflora)eugenia,(((Protium_heptaphyllum,Protium_2)Protium,((Tapirira_2,Tapirira_guianensis)Tapirira,(Schinus_terebinthifolius,Schinus_2)Schinus)anacardiaceae),(Cabralea_canjerana,Cabralea_2)Cabralea))malvids)),(Euterpe_edulis,Euterpe_2)Euterpe)poales_to_asterales,((Nectandra_megapotamica,Cinnamomum_triplinerve)lauraceae,((Virola_bicuhyba,Virola_oleifera,Virola_sebifera)Virola,(Magnolia_ovata,Magnolia_2)Magnolia)magnoliales))magnoliales_to_asterales;"
+
+```
+
+Now I trimmed the above tree in `Mesquite` app to delete the fake branches and then saved the OK tree in `nexus` format, saved in file `plant_tree.nex`.
+
+```{r nexus_tree}
+# NEXUS format from Mesquite
+tree.tr <- read.nexus("plant_tree.nex")
+plot.phylo(tree.tr, cex=0.75)
+
+```
+
+```{r}
+sessionInfo()
+
+```
+
+
+

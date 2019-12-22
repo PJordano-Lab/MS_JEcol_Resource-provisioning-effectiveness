@@ -1,0 +1,64 @@
+---
+title: "Ramphastos example"
+author: "Pedro Jordano"
+date: "16/3/2017"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+### Installation
+
+Install the new effectiveness package (`effect.lndscp`).
+
+```{r install, echo=T}
+# Installation.
+devtools::install_github("pedroj/effectiveness_pckg")
+
+library(effect.lndscp)
+#---------------------------------------------------------------------------
+# Read data. I create a new dataset, ramp_pj to avoid confusion.
+ramp_pj<- read.table("ramp.csv", header=TRUE, sep=";", dec=".", na.strings="NA")
+ramp_pj
+str(ramp_pj)
+
+```
+
+### Plots
+
+Running the example with _Ramphastos_ data.
+
+```{r ramphastos1, echo=T, message=FALSE, warning=FALSE, fig.width=8}
+# attach(ramp) ---- Using attach can be dangerous when running multiple 
+# data with same variable names.
+effectiveness(ramp_pj$qty, ramp_pj$KJG, 
+              ramp_pj$plant_family, 
+              ramp_pj$plant_visit, 10, 
+              myxlab= "Qty component", 
+              myylab= "Qly component (KJG)")
+
+```
+
+
+```{r ramphastos2, echo=T, message=FALSE, warning=FALSE, fig.width=8}
+
+# attach(ramp) ---- Using attach can be dangerous when running multiple 
+# data with same variable names.
+# 
+# Now running with the new effectveness_plot function that uses ggrepel to 
+# avoid clutter of the labels.
+effectiveness_plot(ramp_pj$qty, ramp_pj$KJG, 
+              ramp_pj$plant_family, 
+              ramp_pj$plant_visit, 10, 
+              myxlab= "Qty component", 
+              myylab= "Qly component (KJG)")
+
+```
+
+
+```{r session_info, echo=FALSE}
+sessionInfo()
+
+```

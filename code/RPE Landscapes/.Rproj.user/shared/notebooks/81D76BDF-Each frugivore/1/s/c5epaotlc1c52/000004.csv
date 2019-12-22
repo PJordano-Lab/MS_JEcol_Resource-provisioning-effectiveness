@@ -1,0 +1,37 @@
+"0","RPE2_Cracidae <- effectiveness_plot(Cracid$QTY, Cracid$energy_fruit, , "
+"0","                                    Cracid$plant, 10, "
+"0","                                    myxlab= ""Qty component - feeding frequency (fruits/h)"", "
+"0","                                    myylab= ""Qly component - energy (KJ/fruit)"")"
+"2","Scale for 'y' is already present. Adding another scale for 'y', which
+will replace the existing scale.
+"
+"2","Scale for 'y' is already present. Adding another scale for 'y', which
+will replace the existing scale.
+"
+"2","Scale for 'y' is already present. Adding another scale for 'y', which
+will replace the existing scale.
+"
+"2","Scale for 'y' is already present. Adding another scale for 'y', which
+will replace the existing scale.
+"
+"2","Scale for 'y' is already present. Adding another scale for 'y', which
+will replace the existing scale.
+"
+"2","Scale for 'y' is already present. Adding another scale for 'y', which
+will replace the existing scale.
+"
+"2","Scale for 'y' is already present. Adding another scale for 'y', which
+will replace the existing scale.
+"
+"2","Scale for 'y' is already present. Adding another scale for 'y', which
+will replace the existing scale.
+"
+"2","Scale for 'y' is already present. Adding another scale for 'y', which
+will replace the existing scale.
+"
+"2","Scale for 'y' is already present. Adding another scale for 'y', which
+will replace the existing scale.
+"
+"0","#Include SE bars and colors for each species"
+"0","RPE2_Cracidae + geom_errorbarh(aes(xmin = Cracid$QTY - Cracid$QTY_SE,xmax = Cracid$QTY + Cracid$QTY_SE), height=0.3)+ "
+"0","                geom_point(aes(colour = factor(Cracid$species)), size=3) "

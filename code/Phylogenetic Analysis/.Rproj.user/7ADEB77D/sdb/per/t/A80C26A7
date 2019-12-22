@@ -1,0 +1,20 @@
+{
+    "collab_server" : "",
+    "contents" : "#KENDALL TEST\n#Include data\ntoteff <- read.csv(\"phylo_analy.csv\", sep=\";\", header=T )\nnames(toteff)\n#subset data to continuos variables and without 2 species not used\nmyvars <- names(toteff) %in% c(\"plant_species\", \"plant_familiy\", \"QTY_mean\", \"energy_fruit\", \"TE\", \"Euphonia_pectoralis\", \"Tangara_cayana\") \nnewdata <- toteff[!myvars]\nnames(newdata)\n#correlation between variables\ncor(newdata, method=\"kendall\", use= \"pairwise.complete.obs\")\n#Kendall test\ncor.test(toteff$TE2, toteff$Aburria_jacutinga, method=\"kendall\")\n\ncor(newdata$TE2, newdata[,2:19], use= \"pairwise.complete.obs\", method = \"kendall\")\nplot(newdata$TE2,newdata$Thraupis_sayaca)\n\n\n#CORRELATION TEST\n#Correlation between total effects\ntot<-read.csv(\"Total effects.csv\", sep=\";\", header=T)\nstr(tot)\n\nggplot(tot, aes(TE_common, TE) ) + geom_point() + geom_smooth() +\n  scale_x_log10() + scale_y_log10()\n  \n#remove cinnamomun, ficus and vitex, they are outliers with only one case observation\nspp <-c(1,88,129)\ntot2 <- tot[-c(1,88,129),]\nplot(tot2$TE_common, tot2$TE)\ncor.test(tot2$TE_common, tot2$TE)\n\na<-lm(tot2$TE_common~tot2$TE)\nsummary(a)\nabline(a)\n\n\n#PHYLOGENETIC SIGNAL TEST\nlibrary(ape)\nlibrary(lattice)\nlibrary(permute)\nlibrary(nlme)\nlibrary(vegan)\nlibrary(picante)\n\n#Include tree\ntree.tr <- read.nexus(\"treedumm.nex\")\nplot.phylo(tree.tr, cex=0.75)\n\n#Include trait data\ntraits<-read.csv(\"traits.csv\", sep=\";\", header=T)\nhead(traits)\n\n#Convert trait data to readable format - create data frame with row names as species\ntrait.tr <- data.frame(row.names=1, traits)\ntrait.tr\n#traits2 <- trait[tree.tr$tip.label, ] - #Other way\n\n\n#Vector for total effect values and fruit_energy\nTE <- df2vec(trait.tr, \"TE\")\nfruit_energy <- df2vec(trait.tr, \"energy_fruit\")\n\n#Match the data #match.phylo.data(tree.tr, trait)\n\n#calculate branch lenght for the tree (neccessary to run the analysis)\ntree_lenght <-compute.brlen(tree.tr) #method=Graphen by default\nplot(compute.brlen(tree.tr))\ntree_lenght2<-compute.brlen(tree.tr, 1) #method=giving a branch lenght of 1\nplot(compute.brlen(tree.tr, 1))\n\n#Calcultaes Blomberg's K value\nKcalc(TE, tree_lenght, checkdata=TRUE)\nKcalc(fruit_energy, tree_lenght, checkdata=TRUE)\n\nmultiPhylosignal(trait.tr, tree_lenght) #problem with trait dataframe\n#trying without plant family\ntraits2 <-trait.tr[2:5]\nmultiPhylosignal(traits2, tree_lenght) #problem with trait dataframe\n",
+    "created" : 1500650033051.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "1280377462",
+    "id" : "A80C26A7",
+    "lastKnownWriteTime" : 1500652169,
+    "last_content_update" : 1500652169624,
+    "path" : "~/Documents/Working/MSS_Elena_master/code/Phylogenetic Analysis/analysis.R",
+    "project_path" : "analysis.R",
+    "properties" : {
+    },
+    "relative_order" : 2,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}
