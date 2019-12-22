@@ -1,6 +1,0 @@
-"0","RPE_R_dicol <- effectiveness_plot(R_dicol$QTY, R_dicol$QLY, R_dicol$plant_family, "
-"0","                R_dicol$plant, 10, "
-"0","                myxlab= ""Qty component - feeding frequency (fruits/h)"", "
-"0","                myylab= ""Qly component - energy (KJ/fruit)"")"
-"2","Error: could not find function ""effectiveness_plot""
-"

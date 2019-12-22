@@ -1,3 +1,0 @@
-"0","#RPE for Cracids"
-"0","Cracid <- subset(Cracidae, Cracidae$QTY > 0) #Select rows for which we have data"
-"0","Cracid"

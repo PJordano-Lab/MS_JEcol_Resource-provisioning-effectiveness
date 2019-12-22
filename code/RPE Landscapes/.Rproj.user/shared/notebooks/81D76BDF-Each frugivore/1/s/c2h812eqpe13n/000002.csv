@@ -1,7 +1,0 @@
-"0","#RPE for all Toucans together"
-"0","RPE_toucans <- effectiveness_plot(Toucans$QTY, Toucans$energy_fruit,, "
-"0","                Toucans$plant, 10, "
-"0","                myxlab= ""Qty component - feeding frequency (fruits/h)"", "
-"0","                myylab= ""Qly component - energy (KJ/fruit)"")"
-"2","Error in cbind(q1, q2, group, label) : object 'Toucans' not found
-"

@@ -1,4 +1,0 @@
-"0","ggplot(bmm, aes(x= 1, y= body_mass, fill= factor(frug_family))) +"
-"0","           geom_dotplot(binaxis= ""y"", stackgroups= TRUE,"
-"0","                        binwidth= 0.1, method= ""histodot"", dotsize= 0.5) +"
-"0","           scale_y_log10()"
