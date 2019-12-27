@@ -1,0 +1,65 @@
+---
+title: "correlation_RPE"
+author: "Elena Quintero"
+date: "12/27/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+##KENDALL TEST
+
+```{r input}
+#Read data
+toteff <- read.csv("../../code/Correlation RPEs/Kendall_test.csv", sep=";", header=T )
+names(toteff)
+```
+
+```{r kendall}
+#subset data to the variable of interest
+#Remove 2 bird species not used
+myvars <- names(toteff) %in% c("plant_species", "plant_familiy", "quantity_mean", "energy_fruit", "Euphonia_pectoralis", "Tangara_cayana") 
+newdata <- toteff[!myvars]
+names(newdata)
+#correlation between variables
+cor(newdata, method="kendall", use= "pairwise.complete.obs")
+cor(newdata$RPE, newdata[,2:19], use= "pairwise.complete.obs", method = "kendall")
+```
+
+##CORRELATION TEST
+
+Between individual RPE (RPEi) of pairwise interactions with overall RPE (RPEt)
+```{r data}
+#Read data
+tot<-read.csv("../../code/Correlation RPEs/RPE means.csv", sep=";", header=T)
+
+#In the csv there are two species that are not considered in the manuscript: "Euphonia_pectoralis", "Tangara_cayana" - we remove these 2 frugivore spp and remove all the plants with one replicate.
+spp<-c(1,19,24,28,29,33,37,52,57,58,59,68,71,80,81,87,88,123,129,130,161,162)
+tot <-tot [-spp,]
+#restart numeration in the new dataset  
+rownames(tot) <- NULL
+
+```
+
+
+```{r correlation}
+#Create correlation plot
+library(ggplot2)
+ggplot(tot, aes(RPEt, RPEi)) + geom_point() + geom_smooth(color="red", method="loess") +
+  scale_x_log10(breaks=c(0.01, 0.1, 1, 10)) + scale_y_log10(breaks=c(0.01, 0.1, 1, 10))+
+  theme(axis.text = element_text(size = rel(0.8)), 
+        axis.ticks = element_line(colour = "black"), 
+        panel.background = element_rect(fill = "white", colour = NA), 
+        panel.border = element_rect(fill = NA, colour = "black"), 
+        panel.grid.major = element_line(colour = "grey90", size = 0.2), 
+        panel.grid.minor = element_line(colour = "grey98", size = 0.4), 
+        strip.background = element_rect(fill = "grey80", 
+                                        colour = "grey50", size = 0.2))+
+  labs(x = "Log of mean plant TE", y="Log of species-specific TE")
+
+cor.test(tot$RPEt, tot$RPEi)
+cor.test(log(tot$RPEt), log(tot$RPEi))
+```
+

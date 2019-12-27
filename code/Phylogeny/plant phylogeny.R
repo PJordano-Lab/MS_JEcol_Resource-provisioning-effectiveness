@@ -9,8 +9,9 @@ library(phylosignal)
 
 #PHYLOSIGNAL - using Phylosignal package which also gives lambda and accepts politomie
 #First I read the tree with picante to add branch lenght and create a new nexux file with info for the branch lenghts
+
 phylotree <- read.nexus("code/Phylogeny/myfavtree.nex")#conserved politomy of Myrsine and polytomy Virola solved
-phylotree_lenght <-compute.brlen(tree.tr) #method=Graphen by default
+phylotree_lenght <-compute.brlen(phylotree) #method=Graphen by default
 plot(phylotree_lenght) 
 write.nexus(phylotree_lenght, file="code/Phylogeny/phylotree.nex")
 
