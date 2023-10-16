@@ -2,7 +2,7 @@
 
 This is a public repository for the data, analysis, and code included in our paper:
 
-Quintero E., Pizo M.A., Jordano P. 2020. Fruit resource provisioning for avian frugivores: the overlooked side of seed dispersal effectiveness.*Journal of Ecology* **00**: 1-15. In press.
+Quintero E., Pizo M.A., Jordano P. 2020. Fruit resource provisioning for avian frugivores: the overlooked side side of effectiveness in seed dispersal mutualisms. *Journal of Ecology* **108 (4)**:  1358-1372.
 
 ![](./docs/fig_header.png)
 
